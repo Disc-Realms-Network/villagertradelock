@@ -1,0 +1,5 @@
+# Configuration for VillagerTradeLockPlugin
+
+# If true, the plugin will run experience-checking logic asynchronously on a separate thread.
+# If false, the plugin will run this logic on the server's main thread.
+use-async-check: true

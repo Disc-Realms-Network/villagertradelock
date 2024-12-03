@@ -1,0 +1,9 @@
+name: villagertradelock
+version: '1.0'
+main: net.discrealms.villagertradelock.villagertradelock
+api-version: '1.21'
+prefix: VTL
+load: STARTUP
+authors: [ Disc Realms Network ]
+description: Locks villagers trades after its UI is opened by a player
+website: https://discrealms.net
