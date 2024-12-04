@@ -1,6 +1,7 @@
 package net.discrealms.villagertradelock;
 
-import org.bukkit.Bukkit;
+import io.papermc.paper.threadedregions.scheduler.RegionScheduler;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
@@ -17,7 +18,7 @@ public class villagertradelock extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        // Save default config if not present
+        // Save default config if not there
         saveDefaultConfig();
         loadConfig();
 
@@ -43,20 +44,24 @@ public class villagertradelock extends JavaPlugin implements Listener {
         Villager villager = (Villager) event.getRightClicked();
 
         if (useAsyncCheck) {
-            // Run the check asynchronously on a separate thread
+            // Run the check async on a separate thread
             CompletableFuture.runAsync(() -> checkAndLockTrades(villager));
         } else {
-            // Run the check synchronously on the server thread
+            // Run the check async within the region
             checkAndLockTrades(villager);
         }
     }
 
     private void checkAndLockTrades(Villager villager) {
-        // Ensure this operation is thread-safe
-        Bukkit.getScheduler().runTask(this, () -> {
-            if (villager.getVillagerExperience() > 0) return;
+        Location location = villager.getLocation();
+        RegionScheduler scheduler = getServer().getRegionScheduler();
 
-            // Lock the villager by adding 1 experience
+        scheduler.execute(this, location, () -> {
+            // Prevent trades from being rerolled by marking villager's trades as locked
+            if (villager.getVillagerExperience() > 0) {
+                return;
+            }
+            // Add 1 experience to lock trades
             villager.setVillagerExperience(1);
         });
     }
