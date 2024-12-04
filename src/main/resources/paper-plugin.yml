@@ -1,9 +1,10 @@
 name: villagertradelock
-version: '1.0'
+version: '1.1'
 main: net.discrealms.villagertradelock.villagertradelock
 api-version: '1.21'
 prefix: VTL
 load: STARTUP
 authors: [ Disc Realms Network ]
-description: Locks villagers trades after its UI is opened by a player
+description: Locks villagers trades after its UI is opened by a player to prevent villager re-rolling.
 website: https://discrealms.net
+folia-supported: true
